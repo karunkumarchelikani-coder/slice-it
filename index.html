@@ -9,8 +9,8 @@
 <meta property="og:type" content="website" />
 <meta property="og:title" content="SLICE! — can you beat my score?" />
 <meta property="og:description" content="A juicy little arcade game built in one shot. Swipe to slice, dodge the bombs, chase the combo. Post your score." />
-<meta property="og:url" content="https://YOUR-USERNAME.github.io/slice/" />
-<meta property="og:image" content="https://YOUR-USERNAME.github.io/slice/preview.png" />
+<meta property="og:url" content="https://karunkumarchelikani-coder.github.io/slice-it/" />
+<meta property="og:image" content="https://karunkumarchelikani-coder.github.io/slice-it/preview.png" />
 <meta name="twitter:card" content="summary_large_image" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -427,13 +427,20 @@
     ctx.fillRect(0,0,W,H);
   }
 
+  // Safari/iOS: Apple Color Emoji is a bitmap font that fails at fractional or
+  // arbitrary canvas sizes. Draw all emoji at a fixed 64px with an explicit
+  // emoji font stack, and scale the canvas to the desired size instead.
+  const EMOJI_FONT = '64px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji","Twemoji Mozilla",sans-serif';
+
   function drawFruit(f){
     ctx.save();
     ctx.translate(f.x, f.y);
     ctx.rotate(f.rot);
     ctx.shadowColor = f.bomb ? "rgba(255,120,40,.8)" : "rgba(0,0,0,.35)";
     ctx.shadowBlur = f.bomb ? 26 : 10;
-    ctx.font = `${f.r*2}px serif`;
+    const s = (f.r*2)/64;
+    ctx.scale(s, s);
+    ctx.font = EMOJI_FONT;
     ctx.textAlign = "center"; ctx.textBaseline = "middle";
     ctx.fillText(f.e, 0, 2);
     ctx.restore();
@@ -444,12 +451,14 @@
     ctx.translate(h.x, h.y);
     ctx.rotate(h.rot);
     ctx.globalAlpha = Math.max(0, 1 - h.life/2.4);
-    // clip to one half so it looks cut
+    // clip to one half so it looks cut (clip in unscaled units)
     ctx.beginPath();
     if(h.side < 0) ctx.rect(-h.r*1.2, -h.r*1.2, h.r*1.2, h.r*2.4);
     else ctx.rect(0, -h.r*1.2, h.r*1.2, h.r*2.4);
     ctx.clip();
-    ctx.font = `${h.r*2}px serif`;
+    const s = (h.r*2)/64;
+    ctx.scale(s, s);
+    ctx.font = EMOJI_FONT;
     ctx.textAlign = "center"; ctx.textBaseline = "middle";
     ctx.fillText(h.e, 0, 2);
     ctx.restore();
