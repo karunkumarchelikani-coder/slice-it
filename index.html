@@ -436,8 +436,15 @@
     ctx.save();
     ctx.translate(f.x, f.y);
     ctx.rotate(f.rot);
-    ctx.shadowColor = f.bomb ? "rgba(255,120,40,.8)" : "rgba(0,0,0,.35)";
-    ctx.shadowBlur = f.bomb ? 26 : 10;
+    // Safari renders color emoji as invisible when ctx.shadowBlur is active,
+    // so fake the glow with a radial gradient circle instead of a text shadow.
+    const glowR = f.r * (f.bomb ? 1.5 : 1.25);
+    const grd = ctx.createRadialGradient(0,0,0, 0,0, glowR);
+    grd.addColorStop(0, f.bomb ? "rgba(255,140,60,.55)" : "rgba(0,0,0,.18)");
+    grd.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = grd;
+    ctx.beginPath(); ctx.arc(0,0, glowR, 0, Math.PI*2); ctx.fill();
+
     const s = (f.r*2)/64;
     ctx.scale(s, s);
     ctx.font = EMOJI_FONT;
