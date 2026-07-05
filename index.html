@@ -432,7 +432,7 @@
     ctx.rotate(f.rot);
     ctx.shadowColor = f.bomb ? "rgba(255,120,40,.8)" : "rgba(0,0,0,.35)";
     ctx.shadowBlur = f.bomb ? 26 : 10;
-    ctx.font = `${f.r*2}px serif`;
+    ctx.font = `${f.r*2}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`;
     ctx.textAlign = "center"; ctx.textBaseline = "middle";
     ctx.fillText(f.e, 0, 2);
     ctx.restore();
@@ -448,7 +448,7 @@
     if(h.side < 0) ctx.rect(-h.r*1.2, -h.r*1.2, h.r*1.2, h.r*2.4);
     else ctx.rect(0, -h.r*1.2, h.r*1.2, h.r*2.4);
     ctx.clip();
-    ctx.font = `${h.r*2}px serif`;
+    ctx.font = `${f.r*2}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`;
     ctx.textAlign = "center"; ctx.textBaseline = "middle";
     ctx.fillText(h.e, 0, 2);
     ctx.restore();
